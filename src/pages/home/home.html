@@ -1,14 +1,41 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Tâches
     </ion-title>
+    <ion-badge>5</ion-badge>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+
+  <ion-list>
+
+    <ion-item-sliding *ngFor="let tache of taches">
+      <ion-item>
+        <ion-label>{{ tache.titre }}</ion-label>
+        <ion-checkbox color="secondary"
+                      [(ngModel)]="tache.status"
+                      [class.done]="tache.status"
+                      (ionChange)="saveDoneTasks()"
+                      checked="{{ tache.status }}"></ion-checkbox>
+      </ion-item>
+      <ion-item-options side="right" (ionSwipe)="deleteTask(tache)">
+        <!-- https://stackoverflow.com/questions/45072710/ionic-2-slide-left-to-remove -->
+        <button ion-button (click)="deleteTask(tache)" color="danger" expandable>Supprimer</button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item *ngIf="active">
+
+      <ion-label><ion-icon name="add"></ion-icon></ion-label>
+      <ion-input name="titre"
+                 [(ngModel)]="task.titre"
+                 (keypress)="enterSave($event.keyCode)"
+                 (ionBlur)="saveTask()" type="text">
+      </ion-input>
+    </ion-item>
+
+  </ion-list>
 </ion-content>
+
